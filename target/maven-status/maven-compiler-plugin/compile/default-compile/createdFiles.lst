@@ -1,5 +1,4 @@
 com\kgisl\ocr\repository\RoleRepository.class
-com\kgisl\ocr\service\ImageService.class
 com\kgisl\ocr\web\UserController.class
 com\kgisl\ocr\model\CaptchaResponse.class
 com\kgisl\ocr\service\UserDetailsServiceImpl.class
@@ -7,7 +6,6 @@ com\kgisl\ocr\WebSecurityConfig.class
 com\kgisl\ocr\validator\UserValidator.class
 com\kgisl\ocr\service\CaptchaService.class
 com\kgisl\ocr\WebApplication.class
-com\kgisl\ocr\dao\ImageDao.class
 com\kgisl\ocr\validator\LoginValidator.class
 com\kgisl\ocr\service\SecurityService.class
 com\kgisl\ocr\repository\UserRepository.class
