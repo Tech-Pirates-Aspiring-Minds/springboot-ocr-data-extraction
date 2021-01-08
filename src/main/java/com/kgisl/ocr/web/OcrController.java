@@ -38,20 +38,43 @@ public class OcrController {
 		Files.createDirectories(this.docStorageLocation);
 	}
 
+	/**
+	 * The processFiles method Rest API implements an application that gives JSON
+	 * response as output using Asprise OCR Engine.
+	 *
+	 * @author Kiruba Shankar
+	 * @version 1.0
+	 */
 	@GetMapping("/process/{ocrId}")
-	public Object dataExtractionOutput(@PathVariable("ocrId") Integer ocrId) throws Exception {
+	public Object processFiles(@PathVariable("ocrId") Integer ocrId) throws Exception {
 
 		@SuppressWarnings("rawtypes")
 		List result = imageService.dataExtractionOutput(ocrId);
-
-		Object dataExtractionResults = imageService.listAllDataExtractionJobOutput(result);
-
-		return dataExtractionResults;
+		Object dataExtractionResults = null;
+		try {
+			if (!result.isEmpty()) {
+				dataExtractionResults = imageService.listAllDataExtractionJobOutput(result);
+				return dataExtractionResults;
+			} else {
+				String message = "Invalid Template ID found in the API request";
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			String message = e.getMessage();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(message));
+		}
 	}
 
+	/**
+	 * The save method Rest API implements an application that creates an ocr
+	 * templates in the MYSQL db.
+	 *
+	 * @author Kiruba Shankar
+	 * @version 1.0
+	 */
 	@PostMapping("/save/{templateName}")
-	public String saveOcrCoordinates(@PathVariable("templateName") String templateName, @RequestBody Object obj)
-			throws Exception {
+	public String save(@PathVariable("templateName") String templateName, @RequestBody Object obj) throws Exception {
 		String response = null;
 
 		try {
@@ -64,6 +87,13 @@ public class OcrController {
 		return response;
 	}
 
+	/**
+	 * The uploadFile method Rest API implements an application that converts pdf to
+	 * Image templates using PDFBOX library.
+	 *
+	 * @author Kiruba Shankar
+	 * @version 1.0
+	 */
 	@PostMapping("/upload")
 	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
 		String message = "";
