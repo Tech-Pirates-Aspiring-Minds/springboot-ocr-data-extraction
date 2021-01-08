@@ -13,6 +13,19 @@
       <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
       <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
   <script>
+  function validateMyForm() 
+  {
+	  var input = document.getElementById("white").value;
+	  if (input.toLowerCase() === "white") {
+		  //alert("Form Submission enabled.");
+		  //userloginForm.submit();
+		  return true;
+	  }
+	  else {
+		  alert("Your answer is incorrect, Please enter correct answer and try again.");
+		  return false;
+	  }
+  }
   function recaptchaCallback() 
   {
 	  $('#submitBt').removeAttr('disabled');
@@ -24,7 +37,8 @@
 
     <div class="container">
      <!-- <form method="post" action="${contextPath}/login" class="form-signin">  --> 
-      <form:form method="POST" action="${contextPath}/login" modelAttribute="userForm" class="form-signin">
+      <form:form id="userloginForm" onsubmit="return validateMyForm();"
+       method="POST" action="${contextPath}/login" modelAttribute="userForm" class="form-signin">
         <h2 class="form-heading">Log in</h2>
 
             <span>${message}</span>
@@ -43,12 +57,17 @@
                 </div>
             </spring:bind> 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<br>
 			<div class="g-recaptcha" data-sitekey="6LenFyAaAAAAAC34WXAq_zJtuxIQI-ERjlmn3mTH" class="form-control" data-callback="recaptchaCallback"></div>
 	        <span>${error}</span> 
+	        <br>
+	        <i>Please answer the below security question to proceed with login:</i><br>
+	         <div>
+            <label for="challenge">Color of Panda is Black and &nbsp;</label><input size="8" id="white"/> <br>
+            </div>
             <button id="submitBt" class="btn btn-lg btn-primary btn-block" type="submit" disabled="disabled">Log In</button>
             <h4 class="text-center"><a href="${contextPath}/registration">Create an account</a></h4>
         
+        	<br>
       </form:form>
     </div>
 
