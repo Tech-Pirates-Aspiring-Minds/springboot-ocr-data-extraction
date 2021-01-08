@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "document",
+      "type": "com.kgisl.ocr.model.DocumentStorageProperty",
+      "sourceType": "com.kgisl.ocr.model.DocumentStorageProperty"
+    }
+  ],
+  "properties": [
+    {
+      "name": "document.upload-directory",
+      "type": "java.lang.String",
+      "sourceType": "com.kgisl.ocr.model.DocumentStorageProperty"
+    }
+  ],
+  "hints": []
+}

@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Design OCR coordinates</title>
+<title>OCR Template Creation</title>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-
+<link rel="stylesheet" href="${contextPath}/demo_files/main.css"
+	type="text/css" />
+<link rel="stylesheet" href="${contextPath}/demo_files/demos.css"
+	type="text/css" />
+<link rel="stylesheet" href="${contextPath}/css/jquery.Jcrop.css"
+	type="text/css" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="${contextPath}/js/jquery.Jcrop.js"></script>
 <style type="text/css">
+#previewImg {
+	width: auto !important;
+	height: auto !important;
+}
 
 input.textBox {
 	margin-top: 5px;
@@ -35,6 +44,19 @@ label.inputLabel {
 .btn-file {
 	position: relative;
 	overflow: hidden;
+}
+
+.span12 {
+	width: 100%;
+}
+
+.row {
+	margin-left: 0px;
+	*zoom: 1;
+}
+
+.container {
+	width: auto;
 }
 
 .btn-file input[type=file] {
@@ -96,10 +118,10 @@ label.inputLabel {
 				var reader = new FileReader();
 
 				reader.onload = function() {
-					
+					$("#imgDiv").show();
 					$("#previewImg").attr("src", reader.result);
 					initializeJcrop();
-					$("#imgDiv").show();
+					
 				}
 
 				reader.readAsDataURL(file);
@@ -153,6 +175,7 @@ label.inputLabel {
 <script type="text/javascript">
 var obj = {};
 var counter = 2;
+var validationMesg=false;
 $(document).ready(function(){
 	
   
@@ -194,22 +217,36 @@ $(document).ready(function(){
         
   });
   
-function getButtonValue() {
-    
-    var msg = '';
+function getButtonValue() { 
 	
     for(i=1; i<counter; i++){
-   	  msg += "\n FieldName #" + i + " : " + $('#textbox' + i).val();
-   	  msg += "\n FieldValue #" + i + " : " + $('#textValue' + i).val();
-   
-   	obj[$('#textbox' + i).val()] = $('#textValue' + i).val();
- 
+   	 
+   	if($('#textbox' + i).val()=="" || $('#textValue' + i).val()==""){  
+	   validationMesg=true;
+	   break;
+   	}
+   	else{
+   	 	validationMesg=false;
+   		obj[$('#textbox' + i).val()] = $('#textValue' + i).val();
+   	}
     }
  
 }
 
 function saveOcrCoordMapping(){
+	debugger;
+	if($("#templateName").val()==""){
+		alert("Template Name is mandatory");
+		return false;
+	}
+	
 	getButtonValue();
+	
+    if(validationMesg==true){
+		 alert("Field Name or Field Value is empty");
+		 return false;
+	}
+	
 	$.ajax({
 	      type: 'POST',
 	      contentType: "application/json; charset=utf-8",
@@ -226,17 +263,12 @@ function saveOcrCoordMapping(){
 	    	  
 	      }
 	});
-	
+
 }
 
   
 </script>
-<link rel="stylesheet" href="${contextPath}/demo_files/main.css"
-	type="text/css" />
-<link rel="stylesheet" href="${contextPath}/demo_files/demos.css"
-	type="text/css" />
-<link rel="stylesheet" href="${contextPath}/css/jquery.Jcrop.css"
-	type="text/css" />
+
 
 </head>
 <body onload=initializeJcrop();>
@@ -244,16 +276,16 @@ function saveOcrCoordMapping(){
 	<div class="container">
 		<div class="row">
 			<div class="span12">
-				<div class="jc-demo-box">
+				<div class="jc-demo-box" style="width: 100%">
 
 					<div class="page-header">
 						<ul class="breadcrumb first">
 
-							<li class="active">Design OCR coordinates</li>
+							<li class="active">OCR Template Creation</li>
 						</ul>
-						<h1>Design OCR coordinates</h1>
+						<h1>OCR Template Creation</h1>
 					</div>
-					<h4>Create OCR Template Name</h4>
+					<h4>Template Name</h4>
 					<div>
 						<input type="text" id="templateName"
 							placeholder="Enter OCR Template Name" />
@@ -268,10 +300,10 @@ function saveOcrCoordMapping(){
 					</div>
 					<br />
 					<div id="imgDiv" style="display: none">
-						<div>
-							<img src="${contextPath}/demo_files/sago.jpg" id="previewImg"
-								alt="Pan card Example]" />
-						</div>
+
+
+						<img src="${contextPath}/demo_files/sago.jpg" id="previewImg"
+							alt="Pan card Example]" />
 
 						<!-- This is the form that our event handler fills -->
 						<form id="coords" class="coords" onsubmit="return false;"

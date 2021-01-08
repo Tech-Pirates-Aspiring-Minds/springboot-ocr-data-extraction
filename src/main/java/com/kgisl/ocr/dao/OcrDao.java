@@ -12,11 +12,13 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SuppressWarnings("deprecation")
-public class ImageDao {
+@Component
+public class OcrDao {
 
 	private static SessionFactory factory;
 
@@ -29,8 +31,9 @@ public class ImageDao {
 		}
 		Session session = factory.openSession();
 
-		String sql = "SELECT ocr.ocr_template_Name,map.ocr_field_name,map.ocr_field_coordinates FROM ocr_template_mapping ocr JOIN ocr_coordinates_mapping map ON map.ocr_template_id=ocr.ocr_id WHERE ocr.ocr_id=1";
+		String sql = "SELECT ocr.ocr_template_Name,map.ocr_field_name,map.ocr_field_coordinates FROM ocr_templates ocr JOIN ocr_coordinates_mapping map ON map.ocr_template_id=ocr.ocr_id WHERE ocr.ocr_id=:ocrId";
 		SQLQuery<?> query = session.createSQLQuery(sql);
+		query.setInteger("ocrId", ocrId);
 		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 		List<?> results = query.list();
 		// closing the session
@@ -50,7 +53,7 @@ public class ImageDao {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			StringBuilder sql = new StringBuilder(); // Using default 16 character size
 
-			sql.append("INSERT INTO ocr_template_mapping (ocr_template_Name,ocr_created_user) VALUES('" + templateName
+			sql.append("INSERT INTO ocr_templates (ocr_template_Name,ocr_created_user) VALUES('" + templateName
 					+ "','" + auth.getName() + "');");
 			sql.append("SELECT LAST_INSERT_ID() INTO @templateId;");
 			@SuppressWarnings("unchecked")

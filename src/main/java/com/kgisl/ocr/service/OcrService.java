@@ -18,19 +18,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.asprise.ocr.Ocr;
-import com.kgisl.ocr.dao.ImageDao;
+import com.kgisl.ocr.dao.OcrDao;
 
 @Service
 @Transactional
-public class ImageService {
+public class OcrService {
 	@Autowired
-	ImageDao imageDao;
+	OcrDao ocrDao;
 
 	@Autowired
 	private Environment env;
 
 	public List<?> dataExtractionOutput(Integer ocrId) {
-		return imageDao.dataExtractionOutput(ocrId);
+		return ocrDao.dataExtractionOutput(ocrId);
 	}
 
 	public Object listAllDataExtractionJobOutput(List<Map<String, String>> ocrCoordinates) throws IOException {
@@ -133,7 +133,7 @@ public class ImageService {
 	public void saveOcrCoordinates(String templateName, Object obj) {
 		// TODO Auto-generated method stub
 		try {
-			imageDao.saveOcrCoordinates(templateName, obj);
+			ocrDao.saveOcrCoordinates(templateName, obj);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

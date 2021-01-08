@@ -39,9 +39,9 @@ CREATE TABLE IF NOT EXISTS `ocr_coordinates_mapping` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table test.ocr_template_mapping
-DROP TABLE IF EXISTS `ocr_template_mapping`;
-CREATE TABLE IF NOT EXISTS `ocr_template_mapping` (
+-- Dumping structure for table test.ocr_templates
+DROP TABLE IF EXISTS `ocr_templates`;
+CREATE TABLE IF NOT EXISTS `ocr_templates` (
   `ocr_id` int(11) NOT NULL AUTO_INCREMENT,
   `ocr_template_Name` varchar(50) DEFAULT NULL,
   `ocr_created_user` varchar(50) DEFAULT NULL,

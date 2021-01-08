@@ -20,13 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kgisl.ocr.model.DocumentStorageProperty;
 import com.kgisl.ocr.model.ResponseMessage;
-import com.kgisl.ocr.service.ImageService;
+import com.kgisl.ocr.service.OcrService;
 
 @RestController
 @RequestMapping("/api/ocr/")
 public class OcrController {
 	@Autowired
-	private ImageService imageService;
+	private OcrService imageService;
 	@Autowired
 	private Environment env;
 	private final Path docStorageLocation;
